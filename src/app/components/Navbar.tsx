@@ -1,8 +1,11 @@
 "use client";
 
-import React, { act, useReducer } from "react";
+import React, { act, useReducer, useEffect, useState } from "react";
 import Image from "next/image";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
+import { CiUser } from "react-icons/ci";
+import { IconContext } from "react-icons";
+import Link from "next/link";
 
 type Action =
   | { type: "OPEN"; menu: string }
@@ -30,13 +33,27 @@ const dropDownReducer = (
 };
 
 const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [state, dispatch] = useReducer(dropDownReducer, {
     openDropdown: null,
     openSubmenu: null,
   });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
-      <div className="bg-white text-black text-center pt-10">
+      <div className="bg-white shadow-md sticky top-0 left-0 w-full z-50 text-black text-center pt-10">
         <div className="flex justify-between items-center px-6">
           <div>
             <Image
@@ -54,7 +71,14 @@ const Navbar = () => {
           <div className="w-15">
             <ul className="flex gap-4">
               <li>
-                <a href="#">User</a>
+                <Link href="/login" className="flex items-center gap-2">
+                  <div>
+                    <IconContext.Provider value={{ size: 18 }}>
+                      <CiUser className="fa-4x" />
+                    </IconContext.Provider>
+                  </div>
+                  <div>Login</div>
+                </Link>
               </li>
               <li>
                 <select name="currency" id="currency">
