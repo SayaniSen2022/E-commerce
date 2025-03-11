@@ -71,7 +71,7 @@ const Navbar = () => {
           <div className="w-15">
             <ul className="flex gap-4">
               <li>
-                <Link href="/sign-in" className="flex items-center gap-2">
+                <Link href="/login" className="flex items-center gap-2">
                   <div>
                     <IconContext.Provider value={{ size: 18 }}>
                       <CiUser className="fa-4x" />
