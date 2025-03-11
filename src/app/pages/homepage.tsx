@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Navbar from "../components/Navbar";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -65,10 +64,9 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
       {/* Hero Section */}
       <Link href="#" className="block">
-        <div className="relative w-full h-[720px] overflow-hidden">
+        <div className="relative w-screen h-[720px] overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -91,7 +89,7 @@ const HomePage = () => {
         </div>
       </Link>
       {/* Hero Section Ends*/}
-      {/* Hero Section */}
+
       {/* New Arrivals */}
       <div>
         <div className="py-10 px-4">
