@@ -55,7 +55,7 @@ const Navbar = () => {
     <>
       <div className="bg-white shadow-md sticky top-0 left-0 w-full z-50 text-black text-center pt-10">
         <div className="flex justify-between items-center px-6">
-          <div>
+          <Link href="/">
             <Image
               src="/LND.webp"
               alt="logo"
@@ -63,7 +63,7 @@ const Navbar = () => {
               height={50}
               className="h-15 w-auto mx-auto"
             />
-          </div>
+          </Link>
           <div>
             <input className="border-2 p-2 rounded" placeholder="Search..." />
           </div>
