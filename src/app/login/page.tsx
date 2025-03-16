@@ -36,6 +36,12 @@ export const Login = () => {
                 Forgot your password?
               </Link>
             </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white text-lg p-2 rounded-md font-semibold hover:bg-green-600"
+            >
+              Sign In
+            </button>
           </form>
           <p className="text-center text-sm text-gray-600 mt-4">
             New here?

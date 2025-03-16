@@ -8,8 +8,8 @@ import Link from "next/link";
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
+    email: "",
     password: "",
   });
 
@@ -17,6 +17,25 @@ const SignUp = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // console.log("Form Data:", formData);
+
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setMessage("User registered successfully!");
+    } else {
+      setMessage(data.error || "Something went wrong");
+    }
   };
 
   return (
@@ -27,14 +46,28 @@ const SignUp = () => {
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
             Create Your Account
           </h2>
-          <form className="space-y-2">
+          {message && (
+            <p
+              className={`text-left text-sm pb-1 ${
+                message.toLowerCase().includes("success")
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-2">
             <div>
               <input
                 type="text"
-                name="fullname"
-                id="fullname"
+                name="name"
+                id="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Enter your first and last name"
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
             <div>
@@ -42,7 +75,11 @@ const SignUp = () => {
                 type="tel"
                 placeholder="Mobile Number"
                 id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
             <div>
@@ -50,7 +87,11 @@ const SignUp = () => {
                 type="email"
                 placeholder="Email Address"
                 id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
             <div>
@@ -58,7 +99,11 @@ const SignUp = () => {
                 type="password"
                 placeholder="Enter your password..."
                 id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
             <button
