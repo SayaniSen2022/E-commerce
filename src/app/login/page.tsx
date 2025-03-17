@@ -1,9 +1,37 @@
 //login form
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
 
 export const Login = () => {
+  const [formData, setFormData] = useState({ name: "", password: "" });
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setMessage("Login successful!");
+    } else {
+      setMessage(data.error || "Something went wrong");
+    }
+  };
+
   return (
     <div className="mt-5">
       <Logo />
@@ -12,12 +40,13 @@ export const Login = () => {
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
             Sign In
           </h2>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <input
                 type="text"
-                name="username"
+                name="name"
                 id="username"
+                onChange={handleChange}
                 placeholder="Enter your username..."
                 className="w-full p-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -27,6 +56,8 @@ export const Login = () => {
                 type="password"
                 placeholder="Enter your password..."
                 id="password"
+                name="password"
+                onChange={handleChange}
                 className="w-full p-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <Link
@@ -36,6 +67,17 @@ export const Login = () => {
                 Forgot your password?
               </Link>
             </div>
+            {message && (
+              <p
+                className={`text-center ${
+                  message.includes("successful")
+                    ? "text-green-500"
+                    : "text-red-500"
+                }`}
+              >
+                {message}
+              </p>
+            )}
             <button
               type="submit"
               className="w-full bg-blue-500 text-white text-lg p-2 rounded-md font-semibold hover:bg-green-600"
