@@ -2,11 +2,13 @@
 "use client";
 
 import { useState } from "react";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
 
 export const Login = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({ name: "", password: "" });
   const [message, setMessage] = useState("");
 
@@ -27,6 +29,7 @@ export const Login = () => {
 
     if (res.ok) {
       setMessage("Login successful!");
+      router.push(data.redirect);
     } else {
       setMessage(data.error || "Something went wrong");
     }

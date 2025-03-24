@@ -1,6 +1,7 @@
 "use client";
 
-import React, { act, useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
@@ -33,6 +34,8 @@ const dropDownReducer = (
 };
 
 const Navbar = () => {
+  const { data: session } = useSession(); //Get logged in user info
+  console.log(session);
   const [isScrolled, setIsScrolled] = useState(false);
   const [state, dispatch] = useReducer(dropDownReducer, {
     openDropdown: null,
@@ -71,14 +74,26 @@ const Navbar = () => {
           <div className="w-15">
             <ul className="flex gap-4">
               <li>
-                <Link href="/login" className="flex items-center gap-2">
-                  <div>
-                    <IconContext.Provider value={{ size: 18 }}>
-                      <CiUser className="fa-4x" />
-                    </IconContext.Provider>
-                  </div>
-                  <div>Sign In</div>
-                </Link>
+                {session ? (
+                  <>
+                    <span>Welcome, {session.user?.name}!</span>
+                    <button
+                      className="bg-red-500 px-3 py-1 rounded"
+                      onClick={() => signOut()}
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link href="/login" className="flex items-center gap-2">
+                    <div>
+                      <IconContext.Provider value={{ size: 18 }}>
+                        <CiUser className="fa-4x" />
+                      </IconContext.Provider>
+                    </div>
+                    <div>Sign In</div>
+                  </Link>
+                )}
               </li>
               <li>
                 <select name="currency" id="currency">

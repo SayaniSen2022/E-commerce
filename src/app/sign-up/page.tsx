@@ -1,11 +1,13 @@
 //signup form
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
 const SignUp = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -33,6 +35,7 @@ const SignUp = () => {
 
     if (res.ok) {
       setMessage("User registered successfully!");
+      router.push(data.redirect);
     } else {
       setMessage(data.error || "Something went wrong");
     }

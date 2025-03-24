@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { redirect } from "next/dist/server/api-utils";
 
 export async function POST(req: Request) {
   try {
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "User registered successfully", user },
+      { message: "User registered successfully", redirect: "/login" },
       { status: 201 }
     );
   } catch (error) {
