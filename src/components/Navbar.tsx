@@ -7,6 +7,7 @@ import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
 import { IconContext } from "react-icons";
 import Link from "next/link";
+import { stat } from "fs";
 
 type Action =
   | { type: "OPEN"; menu: string }
@@ -34,9 +35,9 @@ const dropDownReducer = (
 };
 
 const Navbar = () => {
-  const { data: session } = useSession(); //Get logged in user info
-  console.log(session);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { data: session, status } = useSession(); //Get logged in user info
+  console.log(session, status);
   const [state, dispatch] = useReducer(dropDownReducer, {
     openDropdown: null,
     openSubmenu: null,
@@ -52,7 +53,7 @@ const Navbar = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [session]);
 
   return (
     <>
@@ -74,9 +75,11 @@ const Navbar = () => {
           <div className="w-15">
             <ul className="flex gap-4">
               <li>
-                {session ? (
+                {status === "loading" ? (
+                  <p>Loading...</p> // ✅ Show loading state
+                ) : session?.user ? (
                   <>
-                    <span>Welcome, {session.user?.name}!</span>
+                    <span>Welcome, {session.user.name}!</span>
                     <button
                       className="bg-red-500 px-3 py-1 rounded"
                       onClick={() => signOut()}

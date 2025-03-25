@@ -18,9 +18,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(children);
+  // console.log(children);
   return (
-    <SessionProvider>
+    <SessionProvider session={children.props.session}>
       <html lang="en">
         <body className={inter.className}>
           <main>{children}</main>

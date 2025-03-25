@@ -11,16 +11,16 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        name: { label: "Name", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || credentials?.password) {
+        if (!credentials?.name || credentials?.password) {
           throw new Error("Missing credentials");
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { name },
         });
 
         //find user in database
